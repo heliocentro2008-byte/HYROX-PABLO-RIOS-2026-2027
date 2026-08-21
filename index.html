@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pablo Ríos · Entrenamiento HYROX</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#B8460A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HYROX Pablo">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F1E6CE;
+  --bg2:#E9DBBC;
+  --surface:#FFFFFF;
+  --surface2:#FAF3E3;
+  --border:#E1D2AC;
+  --border2:#CDBB8D;
+  --ink:#221D14;
+  --ink2:#6E6248;
+  --ink3:#A3946E;
+
+  /* colores por día de la semana */
+  --mon:#0F53D6;   --mon-ink:#0E3F9E;   --mon-light:#E2ECFE;
+  --tue:#F0600A;   --tue-ink:#B8460A;   --tue-light:#FDEBDC;
+  --wed:#159A4A;   --wed-ink:#0F7538;   --wed-light:#E1F5E7;
+  --thu:#7538C4;   --thu-ink:#5B2A9C;   --thu-light:#EFE4FA;
+  --fri:#D1425B;   --fri-ink:#A82F45;   --fri-light:#FBE3E8;
+  --sat:#0E9488;   --sat-ink:#0B6E64;   --sat-light:#DFF3F1;
+  --sun:#C98A12;   --sun-ink:#9C6B0C;   --sun-light:#FBEFDA;
+
+  --test:#3A3126;  --test-gold:#C9A227; --test-light:#F1E6C6;
+
+  --red:#E12E26;--red-ink:#B32119;--red-light:#FCE6E4;--red-border:#F3AFA9;
+}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+.view{display:none;min-height:100vh}
+.view.active{display:block}
+
+/* ─── HOME HERO — sin negro, base terracota cálida ─── */
+.home-hero{
+  background:linear-gradient(155deg,#7A3A16 0%,#B8460A 55%,#D1691B 100%);
+  padding:32px 20px 26px;position:relative;overflow:hidden
+}
+.home-hero::before{
+  content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;
+  border-radius:50%;background:rgba(255,255,255,.07)
+}
+.home-hero::after{
+  content:'';position:absolute;left:-60px;bottom:-70px;width:180px;height:180px;
+  border-radius:50%;background:rgba(0,0,0,.08)
+}
+.hero-eyebrow{position:relative;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:8px}
+.hero-title{position:relative;font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.95;color:#fff;margin-bottom:6px}
+.hero-hyrox{position:relative;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:58px;font-weight:900;letter-spacing:.04em;color:#FFFFFF;line-height:1;margin:10px 0 16px;text-shadow:0 2px 14px rgba(0,0,0,.18)}
+.countdown{
+  position:relative;display:flex;align-items:baseline;gap:8px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:12px 14px;margin-bottom:14px;
+  width:fit-content
+}
+.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:#fff;line-height:1}
+.cd-txt{font-size:12px;color:rgba(255,255,255,.85);line-height:1.3}
+.cd-txt strong{color:#fff;display:block;font-size:12.5px}
+.hero-pills{position:relative;display:flex;gap:7px;flex-wrap:wrap}
+.hero-pill{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.24)}
+.hero-pill.accent{background:#fff;color:var(--tue-ink)}
+
+.week-section{padding:20px 18px 50px}
+.week-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.week-label::after{content:'';flex:1;height:2px;background:var(--border2)}
+
+.brief-card{background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:16px 17px;margin-bottom:18px}
+.brief-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.brief-row:last-child{border-bottom:none}
+.brief-k{font-size:12px;color:var(--ink2);font-weight:600}
+.brief-v{font-size:12.5px;color:var(--ink);font-weight:600;text-align:right}
+.brief-v.orange{color:var(--tue-ink)}
+
+.day-card{background:var(--surface);border:2px solid var(--border2);border-radius:16px;padding:15px 16px;margin-bottom:11px;cursor:pointer;display:flex;align-items:center;gap:13px;transition:transform .12s;position:relative;overflow:hidden}
+.day-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:6px}
+.day-card.d-thu::after{background:var(--thu)} .day-card.d-thu.today{border-color:var(--thu);background:var(--thu-light)} .day-card.d-thu .dc-letter{color:var(--thu-ink)} .day-card.d-thu .dc-badge{background:var(--thu)}
+.day-card.d-fri::after{background:var(--fri)} .day-card.d-fri.today{border-color:var(--fri);background:var(--fri-light)} .day-card.d-fri .dc-letter{color:var(--fri-ink)} .day-card.d-fri .dc-badge{background:var(--fri)}
+.day-card.d-sat::after{background:var(--sat)} .day-card.d-sat.today{border-color:var(--sat);background:var(--sat-light)} .day-card.d-sat .dc-letter{color:var(--sat-ink)} .day-card.d-sat .dc-badge{background:var(--sat)}
+.day-card.d-sun::after{background:var(--sun)} .day-card.d-sun.today{border-color:var(--sun);background:var(--sun-light)} .day-card.d-sun .dc-letter{color:var(--sun-ink)} .day-card.d-sun .dc-badge{background:var(--sun)}
+.day-card.d-test::after{background:var(--test-gold)} .day-card.d-test{border-color:var(--test-gold);background:var(--test-light)} .day-card.d-test .dc-letter{color:var(--test)} .day-card.d-test .dc-badge{background:var(--test);color:var(--test-gold)}
+.day-card:active{transform:scale(.98)}
+
+.dc-letter{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--ink3);width:32px;text-align:center;flex:0 0 auto;line-height:1}
+.dc-info{flex:1;min-width:0}
+.dc-name{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;text-transform:uppercase;line-height:1.1;margin-bottom:3px}
+.dc-desc{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+.dc-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:5px;color:#fff}
+.dc-dur{font-size:11px;color:var(--ink3);font-weight:600}
+.dc-arrow{color:var(--ink3);font-size:22px}
+
+/* ─── DAY HEADER ─── */
+.day-header{padding:16px 18px 0;position:sticky;top:0;z-index:100;color:#fff}
+.day-header.d-thu{background:linear-gradient(155deg,#3E1D74,#7538C4)}
+.day-header.d-fri{background:linear-gradient(155deg,#7A1F30,#D1425B)}
+.day-header.d-sat{background:linear-gradient(155deg,#0A4D46,#0E9488)}
+.day-header.d-sun{background:linear-gradient(155deg,#6E4A0A,#C98A12)}
+.day-header.d-test{background:linear-gradient(155deg,#211B12,#3A3126)}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:800;color:#fff;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.32);border-radius:10px;padding:8px 14px 8px 10px;cursor:pointer;margin-bottom:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.back-btn:active{background:rgba(255,255,255,.3)}
+.dh-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px}
+.dh-title{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;color:#fff;margin-bottom:11px}
+.dh-pills{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:14px}
+.dh-pill{font-size:10.5px;font-weight:600;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2)}
+
+.subnav{display:flex;gap:6px;padding-bottom:12px;overflow-x:auto}
+.subnav-btn{flex:0 0 auto;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:9px 15px;border-radius:10px 10px 0 0;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border:none;cursor:pointer}
+.subnav-btn.on{background:var(--bg);color:var(--ink)}
+
+.day-main{padding:16px 18px 60px;display:none}
+.day-main.on{display:block}
+
+.s-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin:22px 0 9px;display:flex;align-items:center;gap:10px}
+.s-label:first-child{margin-top:2px}
+.s-label::after{content:'';flex:1;height:2px;background:var(--border2)}
+
+.alert{background:var(--red-light);border:1.5px solid var(--red-border);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--red-ink);margin-bottom:14px;line-height:1.4}
+.alert strong{display:block;margin-bottom:2px;font-size:13px}
+.note{background:var(--surface2);border:1.5px dashed var(--border2);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--ink2);margin-bottom:14px;line-height:1.45}
+.note strong{color:var(--ink)}
+
+.block{background:var(--surface);border:2px solid var(--border2);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.block-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+.b-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;flex:0 0 auto;color:#fff}
+.b-tag.act{background:var(--ink3)}
+.b-tag.thu{background:var(--thu)} .b-tag.fri{background:var(--fri)} .b-tag.sat{background:var(--sat)} .b-tag.sun{background:var(--sun)} .b-tag.test{background:var(--test);color:var(--test-gold)}
+.b-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;flex:1;text-transform:uppercase}
+.b-meta{font-size:11px;color:var(--ink3);font-weight:700;flex:0 0 auto}
+.chev{color:var(--ink3);font-size:10px}
+.block-body{display:none}
+.block-body.open{display:block}
+
+.ex{display:flex;align-items:center;gap:11px;padding:10px 14px;border-top:1px solid var(--border);cursor:pointer}
+.ex:first-child{border-top:none}
+.ex:active{background:var(--surface2)}
+.ex-thumb{width:38px;height:38px;border-radius:9px;background:var(--surface2);border:1.5px solid var(--border);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink3);overflow:hidden}
+.ex-thumb img{width:100%;height:100%;object-fit:cover}
+.ex-left{flex:1;min-width:0}
+.ex-name{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.ex-cue{font-size:11.5px;color:var(--ink2);line-height:1.3;margin-top:1px}
+.ex-warn{font-size:11px;color:var(--red-ink);font-weight:700;margin-top:3px}
+.ex-right{text-align:right;flex:0 0 auto}
+.ex-data{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--ink)}
+.ex-sub{font-size:9.5px;color:var(--tue-ink);font-weight:700}
+
+.ord-row{display:flex;align-items:center;gap:11px;padding:9px 14px;border-top:1px solid var(--border)}
+.ord-row:first-child{border-top:none}
+.ord-num{width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ord-desc{flex:1;font-size:12.5px;color:var(--ink)}
+.ord-data{font-size:12px;font-weight:700;color:var(--ink2)}
+
+.nutri-track{position:relative;padding:6px 0 6px 20px;margin-bottom:6px}
+.nutri-track::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--border2)}
+.nutri-item{position:relative;background:var(--surface);border:2px solid var(--border2);border-radius:12px;padding:11px 13px;margin-bottom:9px}
+.nutri-item::before{content:'';position:absolute;left:-20px;top:16px;width:11px;height:11px;border-radius:50%;background:var(--tue);border:2px solid var(--bg)}
+.nutri-time{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--tue-ink)}
+.nutri-label{font-size:12.5px;font-weight:700;color:var(--ink);margin:2px 0 3px}
+.nutri-desc{font-size:12px;color:var(--ink2);line-height:1.4}
+
+.marks-table{width:100%;border-collapse:collapse;background:var(--surface);border:2px solid var(--border2);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.marks-table th{background:var(--ink);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 8px;text-align:left}
+.marks-table td{padding:8px;border-top:1px solid var(--border);font-size:12px;vertical-align:middle}
+.marks-table tr:nth-child(even) td{background:var(--surface2)}
+.marks-table input,.marks-table select{width:100%;border:1.5px solid var(--border2);border-radius:6px;padding:5px 6px;font-size:12px;font-family:'Inter',sans-serif;background:#fff;color:var(--ink)}
+.marks-ex{font-weight:700;font-size:12px}
+.marks-note{font-size:11px;color:var(--ink3);margin:8px 2px 16px;line-height:1.4}
+
+.alt-intro{background:var(--thu-light);border:1.5px solid #CBA8ED;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#4A2384;margin-bottom:12px;line-height:1.45}
+.alt-intro strong{display:block;margin-bottom:2px}
+
+/* ─── TEST PAGE ─── */
+.test-hero-box{background:linear-gradient(155deg,#211B12,#3A3126);border-radius:16px;padding:18px;margin-bottom:16px;color:#fff}
+.test-hero-box .th-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--test-gold);margin-bottom:6px}
+.test-hero-box .th-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase}
+.test-hero-box .th-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:5px;line-height:1.4}
+
+.calendar-item{display:flex;gap:12px;padding:13px 14px;background:var(--surface);border:2px solid var(--border2);border-radius:12px;margin-bottom:9px;align-items:flex-start}
+.calendar-item.done{border-color:var(--sat);background:var(--sat-light)}
+.cal-date{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--test);flex:0 0 auto;width:58px;text-align:center;line-height:1.05;background:var(--test-light);border-radius:9px;padding:6px 4px}
+.cal-date .cd-month{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--test-ink,#7A6320)}
+.cal-date .cd-days{font-size:15px}
+.calendar-item.done .cal-date{background:var(--sat);color:#fff}
+.calendar-item.done .cal-date .cd-month{color:rgba(255,255,255,.75)}
+.cal-body{flex:1}
+.cal-top{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.cal-name{font-size:13px;font-weight:700;color:var(--ink)}
+.cal-status{font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--sun-light);color:var(--sun-ink)}
+.calendar-item.done .cal-status{background:var(--sat);color:#fff}
+.cal-desc{font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.4}
+.cal-why{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.35;font-style:italic}
+
+.pr-card{display:flex;align-items:center;gap:12px;background:var(--surface);border:2px solid var(--border2);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.pr-thumb{width:44px;height:44px;border-radius:10px;overflow:hidden;flex:0 0 auto;border:1.5px solid var(--border)}
+.pr-thumb img{width:100%;height:100%;object-fit:cover}
+.pr-info{flex:1;min-width:0}
+.pr-name{font-size:13px;font-weight:700;color:var(--ink)}
+.pr-date{font-size:11px;color:var(--ink3)}
+.pr-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--test-gold);text-shadow:0 1px 0 rgba(0,0,0,.15);background:var(--test);padding:3px 12px;border-radius:8px}
+
+/* ─── MODAL ─── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,16,8,.65);z-index:200;align-items:center;justify-content:center;padding:20px}
+.overlay.on{display:flex}
+.modal{background:var(--bg);width:100%;max-width:420px;border-radius:20px;max-height:85vh;overflow-y:auto;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.m-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase}
+.m-sub{font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.m-img-ph{background:var(--surface2);border:2px dashed var(--border2);border-radius:12px;padding:22px 14px;text-align:center;font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.m-img{border-radius:12px;overflow:hidden;margin-bottom:14px;border:2px solid var(--border2);background:var(--surface2)}
+.m-img img{width:100%;display:block;object-fit:cover;max-height:240px}
+.yt-link{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--red-border);border-radius:12px;padding:12px 14px;margin-bottom:14px;text-decoration:none;color:var(--ink)}
+.yt-link .yt-ic{width:34px;height:34px;border-radius:9px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
+.yt-link .yt-txt{font-size:12.5px;font-weight:600;line-height:1.3}
+.yt-link .yt-txt strong{display:block;font-size:11px;color:var(--ink3);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:1px}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.m-stat{background:var(--surface);border:2px solid var(--border2);border-radius:10px;padding:9px 11px}
+.m-stat-l{font-size:10px;color:var(--ink3);text-transform:uppercase;font-weight:700;letter-spacing:.05em}
+.m-stat-v{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800}
+.m-keys{margin-bottom:16px}
+.m-key{display:flex;gap:8px;font-size:12.5px;color:var(--ink2);padding:5px 0;line-height:1.4}
+.m-key-dot{color:var(--tue);flex:0 0 auto}
+.m-close{width:100%;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:13px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;text-transform:uppercase;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="view active" id="home">
+  <div class="home-hero">
+    <div class="hero-eyebrow">Semana de reinicio · 20–24 agosto 2026</div>
+    <div class="hero-title">ENTRENAMIENTO<br>PABLO RÍOS</div>
+    <div class="hero-hyrox">HYROX</div>
+    <div class="countdown">
+      <div class="cd-num">8</div>
+      <div class="cd-txt">semanas y media<br><strong>hasta HYROX Valencia (16–18 oct)</strong></div>
+    </div>
+    <div class="hero-pills">
+      <span class="hero-pill accent">4 sesiones</span>
+      <span class="hero-pill">Jue → Dom</span>
+      <span class="hero-pill">Sentadilla test: 90 kg ✓</span>
+    </div>
+  </div>
+
+  <div class="week-section">
+    <div class="week-label">Bloque</div>
+    <div class="brief-card">
+      <div class="brief-row"><span class="brief-k">Objetivo del bloque</span><span class="brief-v">Reiniciar con enfoque HYROX-específico</span></div>
+      <div class="brief-row"><span class="brief-k">Prioridad principal</span><span class="brief-v orange">Carrera — construir volumen</span></div>
+      <div class="brief-row"><span class="brief-k">Prioridades secundarias</span><span class="brief-v">Glúteo (fuerza+hipertrofia) · Transiciones HYROX</span></div>
+      <div class="brief-row"><span class="brief-k">Mantenimiento</span><span class="brief-v">Sled Push/Pull</span></div>
+      <div class="brief-row"><span class="brief-k">Criterio de carga</span><span class="brief-v">RPE 7–9 en test · RPE 7–8 resto</span></div>
+    </div>
+
+    <div class="week-label">Esta semana (parcial)</div>
+
+    <div class="day-card d-thu today" onclick="openDay('jueves')">
+      <div class="dc-letter">J</div>
+      <div class="dc-info"><div class="dc-name">Lower + Test sentadilla</div><div class="dc-desc">Test 1RM · cadena posterior · glúteo</div></div>
+      <div class="dc-right"><span class="dc-badge">Hecho</span><span class="dc-dur">~90 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-fri" onclick="openDay('viernes')">
+      <div class="dc-letter">V</div>
+      <div class="dc-info"><div class="dc-name">Carrera Z2 + Economía</div><div class="dc-desc">Continuo suave · técnica · strides</div></div>
+      <div class="dc-right"><span class="dc-badge">Carrera</span><span class="dc-dur">~45 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-sat" onclick="openDay('sabado')">
+      <div class="dc-letter">S</div>
+      <div class="dc-info"><div class="dc-name">Upper + Estaciones HYROX</div><div class="dc-desc">Superserie glúteo · Sandbag · Burpee BJ</div></div>
+      <div class="dc-right"><span class="dc-badge">HYROX</span><span class="dc-dur">~90 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-sun" onclick="openDay('domingo')">
+      <div class="dc-letter">D</div>
+      <div class="dc-info"><div class="dc-name">Recuperación + Movilidad</div><div class="dc-desc">Movilidad profunda · trote opcional</div></div>
+      <div class="dc-right"><span class="dc-badge">Suave</span><span class="dc-dur">~35 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-test" onclick="openTest()">
+      <div class="dc-letter">T</div>
+      <div class="dc-info"><div class="dc-name">Tests &amp; Marcas</div><div class="dc-desc">Calendario de tests · histórico de PRs</div></div>
+      <div class="dc-right"><span class="dc-badge">Test</span><span class="dc-dur">6 PRs</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="note" style="margin-top:16px"><strong>Nota del entrenador:</strong> esta semana es parcial (jueves→domingo) para arrancar el reinicio ya. Miércoles de boxeo no se programa esta semana porque ya ha pasado — lo valoraré para la semana completa que empieza el lunes 24, según cómo llegues de carga tras estos 4 días.</div>
+  </div>
+</div>
+
+<div class="view" id="day-view">
+  <div class="day-header" id="dv-header">
+    <button class="back-btn" onclick="goHome()">‹ Semana</button>
+    <div class="dh-eyebrow" id="dv-eyebrow"></div>
+    <div class="dh-title" id="dv-title"></div>
+    <div class="dh-pills" id="dv-pills"></div>
+    <div class="subnav" id="dv-subnav">
+      <button class="subnav-btn on" onclick="switchPanel('entreno',this)">Entreno</button>
+      <button class="subnav-btn" onclick="switchPanel('nutricion',this)">Nutrición</button>
+      <button class="subnav-btn" onclick="switchPanel('marcas',this)">Marcas</button>
+      <button class="subnav-btn" onclick="switchPanel('alt',this)">En casa</button>
+    </div>
+  </div>
+  <div class="day-main on" id="panel-entreno"></div>
+  <div class="day-main" id="panel-nutricion"></div>
+  <div class="day-main" id="panel-marcas"></div>
+  <div class="day-main" id="panel-alt"></div>
+</div>
+
+<div class="view" id="test-view">
+  <div class="day-header d-test">
+    <button class="back-btn" onclick="goHome()">‹ Semana</button>
+    <div class="dh-eyebrow">Testing &amp; Progresión</div>
+    <div class="dh-title">TESTS <span style="color:var(--test-gold)">&amp;</span> MARCAS</div>
+    <div class="dh-pills"><span class="dh-pill">6 PRs registrados</span><span class="dh-pill">Última actualización: 21 agosto</span></div>
+  </div>
+  <div class="day-main on" style="padding:16px 18px 60px">
+    <div class="test-hero-box">
+      <div class="th-eyebrow">Bloque I — Bucle de testing</div>
+      <div class="th-title">TEST → DATOS → ANÁLISIS → PLAN</div>
+      <div class="th-sub">No basta con testear — cada resultado debe traducirse en una decisión real sobre el plan, o se queda solo como dato archivado.</div>
+    </div>
+
+    <div class="s-label">Calendario de tests</div>
+    <div id="cal-list"></div>
+    <div class="note" style="margin-top:2px"><strong>Peso corporal:</strong> no necesita fecha programada — se registra todos los domingos en la pestaña Marcas de ese día, como control continuo, no como test puntual.</div>
+
+    <div class="s-label">Histórico de marcas (PRs)</div>
+    <div id="pr-list"></div>
+    <div class="marks-note">Toca cualquier marca para ver la ejecución técnica del ejercicio.</div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div id="modal-inner"></div>
+    <button class="m-close" onclick="closeModalBtn()" style="margin-top:6px">Cerrar</button>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+
+function switchPanel(name,btn){
+  document.querySelectorAll('.subnav-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.day-main').forEach(p=>p.classList.remove('on'));
+  document.getElementById('panel-'+name).classList.add('on');
+  window.scrollTo(0,0);
+}
+function openDay(day){
+  const d=DAYS[day];if(!d)return;
+  document.getElementById('dv-eyebrow').textContent=d.eyebrow;
+  document.getElementById('dv-title').innerHTML=d.title;
+  document.getElementById('dv-pills').innerHTML=d.pills.map(p=>`<span class="dh-pill">${p}</span>`).join('');
+  document.getElementById('dv-header').className='day-header '+d.cls;
+  document.getElementById('panel-entreno').innerHTML=d.entreno();
+  document.getElementById('panel-nutricion').innerHTML=d.nutricion();
+  document.getElementById('panel-marcas').innerHTML=d.marcas()+'<div class="marks-note">Estos campos no se guardan al recargar la página — haz una captura antes de cerrar, o pásame los datos en el chat.</div>';
+  document.getElementById('panel-alt').innerHTML=d.alt();
+  document.querySelectorAll('.subnav-btn').forEach((b,i)=>b.classList.toggle('on',i===0));
+  document.querySelectorAll('.day-main').forEach((p,i)=>p.classList.toggle('on',i===0));
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('day-view').classList.add('active');
+  document.getElementById('test-view').classList.remove('active');
+  window.scrollTo(0,0);
+}
+function openTest(){
+  document.getElementById('cal-list').innerHTML=CALENDAR.map(c=>`<div class="calendar-item ${c.status==='done'?'done':''}"><div class="cal-date"><div class="cd-month">${c.month}</div><div class="cd-days">${c.days}</div></div><div class="cal-body"><div class="cal-top"><span class="cal-name">${c.name}</span><span class="cal-status">${c.status==='done'?'Hecho':'Pendiente'}</span></div><div class="cal-desc">${c.desc}</div><div class="cal-why">${c.why}</div></div></div>`).join('');
+  document.getElementById('pr-list').innerHTML=PRS.map(p=>{
+    const e=EX[p.id];
+    const img=e&&e.img?`<img src="${BASE_IMG}${e.img}" alt="${p.label}">`:'';
+    return`<div class="pr-card" onclick="openEx('${p.id}')"><div class="pr-thumb">${img}</div><div class="pr-info"><div class="pr-name">${p.label}</div><div class="pr-date">${p.date}</div></div><div class="pr-val">${p.val}</div></div>`;
+  }).join('');
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('day-view').classList.remove('active');
+  document.getElementById('test-view').classList.add('active');
+  window.scrollTo(0,0);
+}
+function goHome(){
+  document.getElementById('day-view').classList.remove('active');
+  document.getElementById('test-view').classList.remove('active');
+  document.getElementById('home').classList.add('active');
+  window.scrollTo(0,0);
+}
+function tb(hdr){hdr.nextElementSibling.classList.toggle('open');}
+function openEx(id){
+  const e=EX[id];if(!e)return;
+  let imgHtml;
+  if(e.img){
+    imgHtml=`<div class="m-img"><img src="${BASE_IMG}${e.img}" alt="${e.n}" onerror="this.parentElement.innerHTML='<div class=m-img-ph>Sin foto disponible</div>'"></div>`;
+  }else if(e.yt){
+    imgHtml=`<a class="yt-link" href="${YT}${encodeURIComponent(e.yt)}" target="_blank" rel="noopener"><span class="yt-ic">▶</span><span class="yt-txt"><strong>Ver ejecución</strong>Buscar "${e.n}" en YouTube</span></a>`;
+  }else{
+    imgHtml=`<div class="m-img-ph">Sin foto disponible</div>`;
+  }
+  let stats='<div class="m-grid">';
+  e.g.forEach(s=>{stats+=`<div class="m-stat"><div class="m-stat-l">${s.l}</div><div class="m-stat-v">${s.v}</div></div>`;});
+  stats+='</div>';
+  let keys='<div class="m-keys">';
+  e.k.forEach(k=>{keys+=`<div class="m-key"><span class="m-key-dot">●</span><span>${k}</span></div>`;});
+  keys+='</div>';
+  document.getElementById('modal-inner').innerHTML=`<div class="m-name">${e.n}</div><div class="m-sub">${e.s}</div>${imgHtml}${stats}${keys}`;
+  document.getElementById('overlay').classList.add('on');
+}
+function closeModal(ev){if(ev.target===document.getElementById('overlay'))closeModalBtn();}
+function closeModalBtn(){document.getElementById('overlay').classList.remove('on');}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
