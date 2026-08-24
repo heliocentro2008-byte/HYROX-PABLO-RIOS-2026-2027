@@ -82,6 +82,9 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-he
 
 .day-card{background:var(--surface);border:2px solid var(--border2);border-radius:16px;padding:15px 16px;margin-bottom:11px;cursor:pointer;display:flex;align-items:center;gap:13px;transition:transform .12s;position:relative;overflow:hidden}
 .day-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:6px}
+.day-card.d-mon::after{background:var(--mon)} .day-card.d-mon.today{border-color:var(--mon);background:var(--mon-light)} .day-card.d-mon .dc-letter{color:var(--mon-ink)} .day-card.d-mon .dc-badge{background:var(--mon)}
+.day-card.d-tue::after{background:var(--tue)} .day-card.d-tue.today{border-color:var(--tue);background:var(--tue-light)} .day-card.d-tue .dc-letter{color:var(--tue-ink)} .day-card.d-tue .dc-badge{background:var(--tue)}
+.day-card.d-wed::after{background:var(--wed)} .day-card.d-wed.today{border-color:var(--wed);background:var(--wed-light)} .day-card.d-wed .dc-letter{color:var(--wed-ink)} .day-card.d-wed .dc-badge{background:var(--wed)}
 .day-card.d-thu::after{background:var(--thu)} .day-card.d-thu.today{border-color:var(--thu);background:var(--thu-light)} .day-card.d-thu .dc-letter{color:var(--thu-ink)} .day-card.d-thu .dc-badge{background:var(--thu)}
 .day-card.d-fri::after{background:var(--fri)} .day-card.d-fri.today{border-color:var(--fri);background:var(--fri-light)} .day-card.d-fri .dc-letter{color:var(--fri-ink)} .day-card.d-fri .dc-badge{background:var(--fri)}
 .day-card.d-sat::after{background:var(--sat)} .day-card.d-sat.today{border-color:var(--sat);background:var(--sat-light)} .day-card.d-sat .dc-letter{color:var(--sat-ink)} .day-card.d-sat .dc-badge{background:var(--sat)}
@@ -100,6 +103,9 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-he
 
 /* ─── DAY HEADER ─── */
 .day-header{padding:16px 18px 0;position:sticky;top:0;z-index:100;color:#fff}
+.day-header.d-mon{background:linear-gradient(155deg,#0B2C7A,#0F53D6)}
+.day-header.d-tue{background:linear-gradient(155deg,#7A3A16,#F0600A)}
+.day-header.d-wed{background:linear-gradient(155deg,#0B4A26,#159A4A)}
 .day-header.d-thu{background:linear-gradient(155deg,#3E1D74,#7538C4)}
 .day-header.d-fri{background:linear-gradient(155deg,#7A1F30,#D1425B)}
 .day-header.d-sat{background:linear-gradient(155deg,#0A4D46,#0E9488)}
@@ -132,6 +138,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-he
 .block-hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
 .b-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:6px;flex:0 0 auto;color:#fff}
 .b-tag.act{background:var(--ink3)}
+.b-tag.mon{background:var(--mon)} .b-tag.tue{background:var(--tue)} .b-tag.wed{background:var(--wed)}
 .b-tag.thu{background:var(--thu)} .b-tag.fri{background:var(--fri)} .b-tag.sat{background:var(--sat)} .b-tag.sun{background:var(--sun)} .b-tag.test{background:var(--test);color:var(--test-gold)}
 .b-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;flex:1;text-transform:uppercase}
 .b-meta{font-size:11px;color:var(--ink3);font-weight:700;flex:0 0 auto}
@@ -233,56 +240,77 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-he
 
 <div class="view active" id="home">
   <div class="home-hero">
-    <div class="hero-eyebrow">Semana de reinicio · 20–24 agosto 2026</div>
+    <div class="hero-eyebrow">Semana 2 · 24–30 agosto 2026</div>
     <div class="hero-title">ENTRENAMIENTO<br>PABLO RÍOS</div>
     <div class="hero-hyrox">HYROX</div>
     <div class="countdown">
-      <div class="cd-num">8</div>
+      <div class="cd-num">7</div>
       <div class="cd-txt">semanas y media<br><strong>hasta HYROX Valencia (16–18 oct)</strong></div>
     </div>
     <div class="hero-pills">
-      <span class="hero-pill accent">4 sesiones</span>
-      <span class="hero-pill">Jue → Dom</span>
-      <span class="hero-pill">Sentadilla test: 90 kg ✓</span>
+      <span class="hero-pill accent">6 sesiones</span>
+      <span class="hero-pill">Lun → Dom</span>
+      <span class="hero-pill">Cadencia: 119→158 spm ↑</span>
     </div>
   </div>
 
   <div class="week-section">
     <div class="week-label">Bloque</div>
     <div class="brief-card">
-      <div class="brief-row"><span class="brief-k">Objetivo del bloque</span><span class="brief-v">Reiniciar con enfoque HYROX-específico</span></div>
-      <div class="brief-row"><span class="brief-k">Prioridad principal</span><span class="brief-v orange">Carrera — construir volumen</span></div>
-      <div class="brief-row"><span class="brief-k">Prioridades secundarias</span><span class="brief-v">Glúteo (fuerza+hipertrofia) · Transiciones HYROX</span></div>
-      <div class="brief-row"><span class="brief-k">Mantenimiento</span><span class="brief-v">Sled Push/Pull</span></div>
-      <div class="brief-row"><span class="brief-k">Criterio de carga</span><span class="brief-v">RPE 7–9 en test · RPE 7–8 resto</span></div>
+      <div class="brief-row"><span class="brief-k">Objetivo del bloque</span><span class="brief-v">Consolidar volumen de carrera + iniciar especificidad HYROX</span></div>
+      <div class="brief-row"><span class="brief-k">Prioridad principal</span><span class="brief-v orange">Carrera — cadencia y volumen</span></div>
+      <div class="brief-row"><span class="brief-k">Prioridades secundarias</span><span class="brief-v">Burpee BJ bajo fatiga · Glúteo (mantenimiento)</span></div>
+      <div class="brief-row"><span class="brief-k">Mantenimiento</span><span class="brief-v">Sled Push (150 kg cómodo)</span></div>
+      <div class="brief-row"><span class="brief-k">Criterio de carga</span><span class="brief-v">RPE 7–8 — sin tests esta semana</span></div>
     </div>
 
-    <div class="week-label">Esta semana (parcial)</div>
+    <div class="week-label">Esta semana</div>
 
-    <div class="day-card d-thu today" onclick="openDay('jueves')">
+    <div class="day-card d-mon today" onclick="openDay('lunes')">
+      <div class="dc-letter">L</div>
+      <div class="dc-info"><div class="dc-name">Lower + Glúteo</div><div class="dc-desc">Superserie eficiencia · sin test hoy</div></div>
+      <div class="dc-right"><span class="dc-badge">Hoy</span><span class="dc-dur">~85 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-tue" onclick="openDay('martes')">
+      <div class="dc-letter">M</div>
+      <div class="dc-info"><div class="dc-name">Carrera Z2 + Cadencia</div><div class="dc-desc">Construir volumen · cue de cadencia</div></div>
+      <div class="dc-right"><span class="dc-badge">Carrera</span><span class="dc-dur">~45 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-wed" onclick="openDay('miercoles')">
+      <div class="dc-letter">X</div>
+      <div class="dc-info"><div class="dc-name">Boxeo (opcional)</div><div class="dc-desc">Desconexión · decidido según carga</div></div>
+      <div class="dc-right"><span class="dc-badge">Opcional</span><span class="dc-dur">~60 min</span></div>
+      <div class="dc-arrow">›</div>
+    </div>
+
+    <div class="day-card d-thu" onclick="openDay('jueves')">
       <div class="dc-letter">J</div>
-      <div class="dc-info"><div class="dc-name">Lower + Test sentadilla</div><div class="dc-desc">Test 1RM · cadena posterior · glúteo</div></div>
-      <div class="dc-right"><span class="dc-badge">Hecho</span><span class="dc-dur">~90 min</span></div>
+      <div class="dc-info"><div class="dc-name">Upper + Estaciones HYROX</div><div class="dc-desc">Superserie glúteo · Burpee BJ · Sled</div></div>
+      <div class="dc-right"><span class="dc-badge">HYROX</span><span class="dc-dur">~90 min</span></div>
       <div class="dc-arrow">›</div>
     </div>
 
     <div class="day-card d-fri" onclick="openDay('viernes')">
       <div class="dc-letter">V</div>
-      <div class="dc-info"><div class="dc-name">Carrera Z2 + Economía</div><div class="dc-desc">Continuo suave · técnica · strides</div></div>
+      <div class="dc-info"><div class="dc-name">Carrera — Economía</div><div class="dc-desc">Strides · cadencia · calidad</div></div>
       <div class="dc-right"><span class="dc-badge">Carrera</span><span class="dc-dur">~45 min</span></div>
       <div class="dc-arrow">›</div>
     </div>
 
     <div class="day-card d-sat" onclick="openDay('sabado')">
       <div class="dc-letter">S</div>
-      <div class="dc-info"><div class="dc-name">Upper + Estaciones HYROX</div><div class="dc-desc">Superserie glúteo · Sandbag · Burpee BJ</div></div>
-      <div class="dc-right"><span class="dc-badge">HYROX</span><span class="dc-dur">~90 min</span></div>
+      <div class="dc-info"><div class="dc-name">Circuito HYROX</div><div class="dc-desc">Run → Estación → Run</div></div>
+      <div class="dc-right"><span class="dc-badge">HYROX</span><span class="dc-dur">~70 min</span></div>
       <div class="dc-arrow">›</div>
     </div>
 
     <div class="day-card d-sun" onclick="openDay('domingo')">
       <div class="dc-letter">D</div>
-      <div class="dc-info"><div class="dc-name">Recuperación + Movilidad</div><div class="dc-desc">Movilidad profunda · trote opcional</div></div>
+      <div class="dc-info"><div class="dc-name">Recuperación + Movilidad</div><div class="dc-desc">Descanso activo · cierre de semana</div></div>
       <div class="dc-right"><span class="dc-badge">Suave</span><span class="dc-dur">~35 min</span></div>
       <div class="dc-arrow">›</div>
     </div>
@@ -294,10 +322,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-he
       <div class="dc-arrow">›</div>
     </div>
 
-    <div class="note" style="margin-top:16px"><strong>Nota del entrenador:</strong> esta semana es parcial (jueves→domingo) para arrancar el reinicio ya. Miércoles de boxeo no se programa esta semana porque ya ha pasado — lo valoraré para la semana completa que empieza el lunes 24, según cómo llegues de carga tras estos 4 días.</div>
-  </div>
-</div>
-
+    <div class="note" style="margin-top:16px"><strong>Nota del entrenador:</strong> primera semana completa (lunes-domingo) del reinicio. La semana pasada fue toda buenas sensaciones — sentadilla 90kg, sled push 150kg cómodo, rodilla sin dolor en sandbag lunges, y un salto real de cadencia (119→158 spm) el domingo. Esta semana seguimos construyendo volumen de carrera sin tocar cargas de fuerza al máximo — no hay ningún test programado hasta el 8-13 de septiembre.</div>
 <div class="view" id="day-view">
   <div class="day-header" id="dv-header">
     <button class="back-btn" onclick="goHome()">‹ Semana</button>
