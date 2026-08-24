@@ -23,6 +23,8 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = e.request.url;
 
+  // data.js: siempre intenta red primero (para ver la semana nueva),
+  // si no hay conexión usa la última versión guardada.
   if (url.includes('data.js')) {
     e.respondWith(
       fetch(e.request)
@@ -36,6 +38,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+  // Resto de archivos de la app (shell): cache primero, red de respaldo.
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
